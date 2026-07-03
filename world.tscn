@@ -4,6 +4,9 @@
 [ext_resource type="ArrayMesh" uid="uid://bv10cvv6jbw4d" path="res://assets/tree.obj" id="3_aqk2v"]
 [ext_resource type="Script" uid="uid://bi0087r3ahknq" path="res://components/terrain/terrain_manager.gd" id="3_tlwt5"]
 [ext_resource type="Material" uid="uid://b5kssrlt2upic" path="res://assets/tree_material.tres" id="4_036b0"]
+[ext_resource type="Script" uid="uid://d06obqel46sth" path="res://game_manager.gd" id="5_036b0"]
+[ext_resource type="Script" uid="uid://di1ev07dvspqx" path="res://car_controller.gd" id="5_pkg7o"]
+[ext_resource type="Script" uid="uid://bxulbpt23hh1q" path="res://assets/car_camera.gd" id="6_dwbse"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_fj7yv"]
 
@@ -20,6 +23,14 @@ sky = SubResource("Sky_fj7yv")
 
 [sub_resource type="Gradient" id="Gradient_tlwt5"]
 colors = PackedColorArray(0.22352941, 0.6, 0, 1, 0.5764706, 0.8784314, 0.1764706, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_dwbse"]
+size = Vector3(2, 1, 4)
+
+[sub_resource type="BoxMesh" id="BoxMesh_pkg7o"]
+size = Vector3(2, 1, 4)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_flvp3"]
 
 [node name="World" type="Node3D" unique_id=456103018]
 
@@ -49,3 +60,38 @@ target_node = NodePath("../Camera3D")
 terrain_colors = SubResource("Gradient_tlwt5")
 tree_mesh = ExtResource("3_aqk2v")
 tree_material = ExtResource("4_036b0")
+
+[node name="PlayerCar" type="VehicleBody3D" parent="." unique_id=1224155256]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 18.924665, 0)
+can_sleep = false
+script = ExtResource("5_pkg7o")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PlayerCar" unique_id=1271471146]
+shape = SubResource("BoxShape3D_dwbse")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="PlayerCar" unique_id=811855388]
+mesh = SubResource("BoxMesh_pkg7o")
+
+[node name="VehicleWheel3D" type="VehicleWheel3D" parent="PlayerCar" unique_id=653275121]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0.5, -1.5)
+engine_force = 413.54
+use_as_traction = true
+use_as_steering = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="PlayerCar/VehicleWheel3D" unique_id=302783867]
+mesh = SubResource("CylinderMesh_flvp3")
+
+[node name="CameraAnchor" type="Node3D" parent="PlayerCar" unique_id=1360959083]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 5)
+
+[node name="GameManager" type="Node" parent="." unique_id=1109949842 node_paths=PackedStringArray("flying_cam", "player_car", "smooth_camera", "terrain_manager")]
+script = ExtResource("5_036b0")
+flying_cam = NodePath("../Camera3D")
+player_car = NodePath("../PlayerCar")
+smooth_camera = NodePath("../SmoothCarCamera")
+terrain_manager = NodePath("../TerrainManager")
+
+[node name="SmoothCarCamera" type="Camera3D" parent="." unique_id=281503834 node_paths=PackedStringArray("target_node", "car_node")]
+script = ExtResource("6_dwbse")
+target_node = NodePath("../PlayerCar/CameraAnchor")
+car_node = NodePath("../PlayerCar")
