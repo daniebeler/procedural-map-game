@@ -1,0 +1,51 @@
+[gd_scene format=3 uid="uid://dq8ht1yepgr4p"]
+
+[ext_resource type="Script" uid="uid://5m1g5apn2ux2" path="res://flying_camera.gd" id="2_fj7yv"]
+[ext_resource type="Script" uid="uid://bi0087r3ahknq" path="res://components/terrain/terrain_manager.gd" id="3_tlwt5"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_fj7yv"]
+
+[sub_resource type="Sky" id="Sky_fj7yv"]
+sky_material = SubResource("ProceduralSkyMaterial_fj7yv")
+
+[sub_resource type="Environment" id="Environment_flvp3"]
+background_mode = 2
+sky = SubResource("Sky_fj7yv")
+
+[sub_resource type="BoxMesh" id="BoxMesh_flvp3"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_flvp3"]
+
+[sub_resource type="Gradient" id="Gradient_tlwt5"]
+colors = PackedColorArray(0.22352941, 0.6, 0, 1, 0.5764706, 0.8784314, 0.1764706, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_fj7yv"]
+top_radius = 0.0
+
+[node name="World" type="Node3D" unique_id=456103018]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=186579865]
+transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=1381720394]
+transform = Transform3D(1, 0, 0, 0, 0.80738866, 0.59001994, 0, -0.59001994, 0.80738866, -1.0822382, 35.604523, 68.5518)
+script = ExtResource("2_fj7yv")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1840303799]
+environment = SubResource("Environment_flvp3")
+
+[node name="RigidBody3D" type="RigidBody3D" parent="." unique_id=1942826455]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 38.985638, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D" unique_id=1374266717]
+mesh = SubResource("BoxMesh_flvp3")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D" unique_id=594373413]
+shape = SubResource("BoxShape3D_flvp3")
+
+[node name="TerrainManager" type="Node3D" parent="." unique_id=9716897 node_paths=PackedStringArray("target_node")]
+script = ExtResource("3_tlwt5")
+target_node = NodePath("../Camera3D")
+terrain_colors = SubResource("Gradient_tlwt5")
+tree_mesh = SubResource("CylinderMesh_fj7yv")
