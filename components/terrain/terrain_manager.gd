@@ -3,6 +3,7 @@ extends Node3D
 @export var target_node: Node3D
 @export var terrain_colors: Gradient
 @export var tree_mesh: Mesh
+@export var tree_material: Material
 
 @export var chunk_size: float = 32.0
 @export var chunk_resolution: int = 32
@@ -109,6 +110,8 @@ func spawn_chunk_node(coord: Vector2i, data: Dictionary) -> void:
 			
 		var tree_instance := MultiMeshInstance3D.new()
 		tree_instance.multimesh = m_mesh
+		if tree_material:
+			tree_instance.set_material_override(tree_material)
 		chunk_root.add_child(tree_instance)
 		
 	add_child(chunk_root)

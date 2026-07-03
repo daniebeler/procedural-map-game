@@ -1,7 +1,9 @@
 [gd_scene format=3 uid="uid://dq8ht1yepgr4p"]
 
 [ext_resource type="Script" uid="uid://5m1g5apn2ux2" path="res://flying_camera.gd" id="2_fj7yv"]
+[ext_resource type="ArrayMesh" uid="uid://bv10cvv6jbw4d" path="res://assets/tree.obj" id="3_aqk2v"]
 [ext_resource type="Script" uid="uid://bi0087r3ahknq" path="res://components/terrain/terrain_manager.gd" id="3_tlwt5"]
+[ext_resource type="Material" uid="uid://b5kssrlt2upic" path="res://assets/tree_material.tres" id="4_036b0"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_fj7yv"]
 
@@ -18,9 +20,6 @@ sky = SubResource("Sky_fj7yv")
 
 [sub_resource type="Gradient" id="Gradient_tlwt5"]
 colors = PackedColorArray(0.22352941, 0.6, 0, 1, 0.5764706, 0.8784314, 0.1764706, 1)
-
-[sub_resource type="CylinderMesh" id="CylinderMesh_fj7yv"]
-top_radius = 0.0
 
 [node name="World" type="Node3D" unique_id=456103018]
 
@@ -48,4 +47,5 @@ shape = SubResource("BoxShape3D_flvp3")
 script = ExtResource("3_tlwt5")
 target_node = NodePath("../Camera3D")
 terrain_colors = SubResource("Gradient_tlwt5")
-tree_mesh = SubResource("CylinderMesh_fj7yv")
+tree_mesh = ExtResource("3_aqk2v")
+tree_material = ExtResource("4_036b0")
